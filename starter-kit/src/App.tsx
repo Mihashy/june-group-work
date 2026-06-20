@@ -14,15 +14,19 @@ const [newsError, setNewsError] = React.useState(false);
 React.useEffect(() => {
   const getNews = async () => {
     try {
+      console.log("APIキー:f26f9b99986f4f1db0edb20406a3d884", import.meta.env.VITE_NEWS_API_KEY);
       const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=jp&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+        `https://newsapi.org/v2/top-headlines?country=us&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
       );
+      console.log("通信結果:", response.status);
+
+      const data = await response.json();
+      console.log("ニュースの結果:", data);
 
       if (!response.ok) {
         throw new Error("ニュースを取得できませんでした");
       }
 
-      const data = await response.json();
       setNews(data.articles);
     } catch (error) {
       console.error(error);
