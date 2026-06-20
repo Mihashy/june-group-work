@@ -14,7 +14,6 @@ const [newsError, setNewsError] = React.useState(false);
 React.useEffect(() => {
   const getNews = async () => {
     try {
-      console.log("APIキー:f26f9b99986f4f1db0edb20406a3d884", import.meta.env.VITE_NEWS_API_KEY);
       const response = await fetch(
         `https://newsapi.org/v2/top-headlines?country=us&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
       );
