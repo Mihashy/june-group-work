@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Cloud, Newspaper, CheckCircle, Clock } from 'lucide-react';
+import { Sun, Newspaper, CheckCircle, Clock } from 'lucide-react';
 
 function App() {
   const [time, setTime] = React.useState(new Date());
@@ -8,6 +8,30 @@ function App() {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+  const [news, setNews] = React.useState([]);
+const [newsError, setNewsError] = React.useState(false);
+
+React.useEffect(() => {
+  const getNews = async () => {
+    try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=jp&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+      );
+
+      if (!response.ok) {
+        throw new Error("ニュースを取得できませんでした");
+      }
+
+      const data = await response.json();
+      setNews(data.articles);
+    } catch (error) {
+      console.error(error);
+      setNewsError(true);
+    }
+  };
+
+  getNews();
+}, []);
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -41,12 +65,34 @@ function App() {
             </h2>
           </div>
           <ul className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <li key={i} className="text-sm text-slate-600 border-b border-slate-50 pb-2 last:border-0">
-                Loading some interesting news...
-              </li>
-            ))}
-          </ul>
+            {newsError && (
+    <li className="text-sm text-red-500">
+      ニュースを取得できませんでした。
+    </li>
+  )}
+
+  {!newsError && news.length === 0 && (
+    <li className="text-sm text-slate-500">
+      ニュースを読み込み中...
+    </li>
+  )}
+
+  {news.map((article) => (
+    <li
+      key={article.url}
+      className="text-sm text-slate-600 border-b border-slate-50 pb-2 last:border-0"
+    >
+      <a
+        href={article.url}
+        target="_blank"
+        rel="noreferrer"
+        className="hover:underline"
+        >
+        {article.title}
+      </a>
+    </li>
+  ))}
+</ul>
         </section>
 
         {/* Tasks Widget Placeholder */}
