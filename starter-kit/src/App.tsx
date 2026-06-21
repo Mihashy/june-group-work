@@ -40,9 +40,10 @@ React.useEffect(() => {
   //おみくじ結果を持つ変数、およびそれの値を管理する関数
   const [fortune, setFortune] = useState("");
   //おみくじのボタンの関数
-  //OmikuziAI.tsx内のOmikuziAI関数を呼び出してAI生成の文章を取得、fortuneに突っ込む
   const omikuziClick = async () => {
+    //OmikuziAI.tsx内のOmikuziAI関数を呼び出してAI生成の文章を取得
     const result = await OmikuziAI();
+    //fortuneに突っ込む
     setFortune( result );
   }
 
@@ -124,7 +125,11 @@ React.useEffect(() => {
         </section>
 
         <section>
+          <button onClick = { omikuziClick }>
+            今日の運勢を占う
+          </button>
 
+          <FortuneDisplay fortuneText = { fortune ?? "" } />
         </section>
       </main>
 

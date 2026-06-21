@@ -2,7 +2,7 @@ type DisplayProps = {
     fortuneText: string;
 }
 
-export async function FortuneDisplay( { fortuneText } : DisplayProps ) {
+export function FortuneDisplay( { fortuneText } : DisplayProps ) {
     //*大吉や大凶など* *恋愛運の本文* *金運の本文* *健康運の本文* *カラー名* *アイテム名* *今日の一言の本文*
     if( fortuneText.length == 0 ) {
         return( <p></p> );
