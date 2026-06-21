@@ -1,13 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
+
 const ai = new GoogleGenAI({
-    apiKey: process.env.VITE_GEMINI_API_KEY
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY
 });
 
 export async function OmikuziAI() {
+  console.log(import.meta.env.VITE_GEMINI_API_KEY);
+
+  
   const response = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
-    contents: 'ユーザーの今日の運勢を占ってください。貴方の返答をいくつかのストリングに機械的に分割しますので、返答に関しては、*で囲まれた内部および*の文字そのものを書き換える形で、次の形式を厳守するようお願いします。*の中には項目名は一切含めず、占いの結果（本文や単語）のみを出力してください。*大吉や大凶など* *恋愛運の本文* *金運の本文* *健康運の本文* *カラー名* *アイテム名* *今日の一言の本文*',
+    model: "gemini-2.5-flash",
+    contents: 'ユーザーの今日の運勢を占ってください。貴方の返答をいくつかのストリングに機械的に分割しますので、返答に関しては、*で囲まれた内部および*の文字そのものを書き換える形で、かつ勝手に空白を加えないように、次の形式を厳守するようお願いします。*の中には項目名は一切含めず、占いの結果（本文や単語）のみを出力してください。*大吉や大凶など* *恋愛運の本文* *金運の本文* *健康運の本文* *カラー名* *アイテム名* *今日の一言の本文*',
   });
 
   return response.text ?? "生成もしくは受け取りのエラー";

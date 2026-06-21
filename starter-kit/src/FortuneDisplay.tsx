@@ -7,7 +7,7 @@ export function FortuneDisplay( { fortuneText } : DisplayProps ) {
     if( fortuneText.length == 0 ) {
         return( <p></p> );
     }
-
+    
     let index;
     //総合運
     index = fortuneText.indexOf(" ");
@@ -32,8 +32,8 @@ export function FortuneDisplay( { fortuneText } : DisplayProps ) {
     const quoteL = fortuneText.slice( index );
     
     const result = totalL + "<br>" + loveL + "<br>" + moneyL + "<br>" + healthL + "<br>" + colorL + "<br>" + itemL + "<br>" + quoteL;
-
+    
     return (
-        <p>{ result }</p>
+        <p> { result } </p>
     );
 }
