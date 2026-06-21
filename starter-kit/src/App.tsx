@@ -1,5 +1,9 @@
 import React from 'react';
 import { Sun, Newspaper, CheckCircle, Clock } from 'lucide-react';
+import { useState } from 'react';
+
+import { OmikuziAI } from "./OmikuziAI";
+import { FortuneDisplay } from "./FortuneDisplay";
 
 function App() {
   const [time, setTime] = React.useState(new Date());
@@ -32,6 +36,15 @@ React.useEffect(() => {
 
   getNews();
 }, []);
+
+  //おみくじ結果を持つ変数、およびそれの値を管理する関数
+  const [fortune, setFortune] = useState("");
+  //おみくじのボタンの関数
+  //OmikuziAI.tsx内のOmikuziAI関数を呼び出してAI生成の文章を取得、fortuneに突っ込む
+  const omikuziClick = async () => {
+    const result = await OmikuziAI();
+    setFortune( result );
+  }
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -108,6 +121,10 @@ React.useEffect(() => {
               <span>Drink 1 glass of water</span>
             </label>
           </div>
+        </section>
+
+        <section>
+          
         </section>
       </main>
 
