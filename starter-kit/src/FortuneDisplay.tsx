@@ -7,33 +7,24 @@ export function FortuneDisplay( { fortuneText } : DisplayProps ) {
     if( fortuneText.length == 0 ) {
         return( <p></p> );
     }
-    
-    let index;
-    //総合運
-    index = fortuneText.indexOf(" ");
-    const totalL = fortuneText.slice( index );
-    //恋愛運
-    index = fortuneText.indexOf(" ", ++ index );
-    const loveL = fortuneText.slice( index );
-    //金運
-    index = fortuneText.indexOf(" ", ++ index );
-    const moneyL = fortuneText.slice( index );
-    //健康運
-    index = fortuneText.indexOf(" ", ++ index );
-    const healthL = fortuneText.slice( index );
-    //ラッキーカラー
-    index = fortuneText.indexOf(" ", ++ index );
-    const colorL = fortuneText.slice( index );
-    //ラッキーアイテム
-    index = fortuneText.indexOf(" ", ++ index );
-    const itemL = fortuneText.slice( index );
-    //今日の一言
-    index = fortuneText.indexOf(" ", ++ index ); 
-    const quoteL = fortuneText.slice( index );
-    
-    const result = totalL + "<br>" + loveL + "<br>" + moneyL + "<br>" + healthL + "<br>" + colorL + "<br>" + itemL + "<br>" + quoteL;
+
+    //総合運、恋愛運、金運、健康運、カラー、アイテム、一言
+    let index = 0;
+    let indexE = 0;
+    let luckN = ["総合運", "恋愛運", "金運", "健康運", "ラッキーカラー", "ラッキーアイテム", "本日の一言"]
+    let result = [];
+    for( let i = 0; i < 7; i ++ ) {
+        index = indexE;
+        indexE = fortuneText.indexOf( "|", index + 1 );
+        //最初
+        if( i == 0 ) result.push( <p>{ luckN[i] }： { fortuneText.slice( 0, indexE ) } </p> );
+        //中間
+        else if( indexE != -1 ) result.push( <p>{ luckN[i] }： { fortuneText.slice( index + 1, indexE ) } </p> );
+        //最後
+        else result.push( <p>{ luckN[i] }： { fortuneText.slice( index + 1 ) }</p> )
+    }
     
     return (
-        <p> { result } </p>
+        <> { result } </>
     );
 }
