@@ -143,16 +143,29 @@ function App() {
           </div>
         </section>
 
-        <section>
-          <button onClick = { omikuziClick }>
-            今日の運勢を占う
-          </button>
+        <section className="md:col-span-2 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+  <button
+    onClick={omikuziClick}
+    className="px-5 py-2 mb-4 rounded-xl bg-purple-500 text-white font-semibold hover:bg-purple-600"
+  >
+    今日の運勢を占う
+  </button>
 
-          <FortuneDisplay 
-          fortuneText = { fortune ?? "" }
-          loadingState = { isLoading }
-          />
-        </section>
+  <div className="flex flex-col md:flex-row gap-6 items-stretch">
+    <div className="flex-1">
+      <FortuneDisplay
+        fortuneText={fortune ?? ""}
+        loadingState={isLoading}
+      />
+    </div>
+
+    <img
+      className="w-full md:w-56 h-48 md:h-auto object-cover rounded-2xl shadow-sm"
+      src="/占い師.jpg"
+      alt="占い師"
+    />
+  </div>
+</section>
       </main>
 
       <footer className="mt-12 text-center text-slate-400 text-xs">
