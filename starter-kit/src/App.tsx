@@ -1,5 +1,9 @@
 import React from 'react';
 import { Sun, Newspaper, CheckCircle, Clock } from 'lucide-react';
+import { useState } from 'react';
+
+import { OmikuziAI } from "./OmikuziAI";
+import { FortuneDisplay } from "./FortuneDisplay";
 
 function App() {
   const [time, setTime] = React.useState(new Date());
@@ -9,28 +13,47 @@ function App() {
     return () => clearInterval(timer);
   }, []);
   const [news, setNews] = React.useState([]);
-const [newsError, setNewsError] = React.useState(false);
+  const [newsError, setNewsError] = React.useState(false);
 
-React.useEffect(() => {
-  const getNews = async () => {
-    try {
-      const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=us&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error("ニュースを取得できませんでした");
+  React.useEffect(() => {
+    const getNews = async () => {
+      try {
+        const response = await fetch(
+          `https://newsapi.org/v2/top-headlines?country=jp&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+        );
+
+        if (!response.ok) {
+          throw new Error("ニュースを取得できませんでした");
+        }
+
+        const data = await response.json();
+        setNews(data.articles);
+      } catch (error) {
+        console.error(error);
+        setNewsError(true);
       }
+    };
 
-      setNews(data.articles);
-    } catch (error) {
-      console.error(error);
-      setNewsError(true);
-    }
-  };
+    getNews();
+  }, []);
 
-  getNews();
-}, []);
+  //おみくじ結果を持つ変数、およびそれの値を管理する関数
+  const [fortune, setFortune] = useState("");
+  //ローディング画面を表示すべきか否かを判断する
+  const [isLoading, setIsLoading] = useState(false); 
+  //おみくじのボタンの関数
+  const omikuziClick = async () => {
+    //ローディング画面表示開始
+    setIsLoading( true );
+
+    //OmikuziAI.tsx内のOmikuziAI関数を呼び出してAI生成の文章を取得
+    const result = await OmikuziAI();
+    //fortuneに突っ込む
+    setFortune( result );
+
+    //ローディング画面終了
+    setIsLoading( false );
+  }
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -107,6 +130,17 @@ React.useEffect(() => {
               <span>Drink 1 glass of water</span>
             </label>
           </div>
+        </section>
+
+        <section>
+          <button onClick = { omikuziClick }>
+            今日の運勢を占う
+          </button>
+
+          <FortuneDisplay 
+          fortuneText = { fortune ?? "" }
+          loadingState = { isLoading }
+          />
         </section>
       </main>
 
