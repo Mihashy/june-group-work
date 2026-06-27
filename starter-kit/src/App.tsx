@@ -14,28 +14,33 @@ function App() {
   }, []);
   const [news, setNews] = React.useState([]);
   const [newsError, setNewsError] = React.useState(false);
+  const [isNewsLoading, setIsNewsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const getNews = async () => {
-      try {
-        const response = await fetch(
-          `https://newsapi.org/v2/top-headlines?country=jp&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
-        );
+  const getNews = async () => {
+    try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=us&pageSize=3&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+      );
 
-        if (!response.ok) {
-          throw new Error("ニュースを取得できませんでした");
-        }
+      const data = await response.json();
+      console.log("NewsAPI:", response.status, data);
 
-        const data = await response.json();
-        setNews(data.articles);
-      } catch (error) {
-        console.error(error);
-        setNewsError(true);
+      if (!response.ok) {
+        throw new Error(data.message || "ニュースを取得できませんでした");
       }
-    };
 
-    getNews();
-  }, []);
+      setNews(data.articles ?? []);
+    } catch (error) {
+      console.error("ニュース取得エラー:", error);
+      setNewsError(true);
+    } finally {
+      setIsNewsLoading(false);
+    }
+  };
+
+  getNews();
+}, []);
 
   //おみくじ結果を持つ変数、およびそれの値を管理する関数
   const [fortune, setFortune] = useState("");
@@ -93,11 +98,17 @@ function App() {
     </li>
   )}
 
-  {!newsError && news.length === 0 && (
-    <li className="text-sm text-slate-500">
-      ニュースを読み込み中...
-    </li>
-  )}
+  {isNewsLoading && (
+  <li className="text-sm text-slate-500">
+    ニュースを読み込み中...
+  </li>
+)}
+
+{!isNewsLoading && !newsError && news.length === 0 && (
+  <li className="text-sm text-slate-500">
+    ニュースが見つかりませんでした。
+  </li>
+)}
 
   {news.map((article) => (
     <li
