@@ -10,11 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@google/genai": "^2.9.0",
+>>>>>>> e2283e1c5564f2c22c5e950e7a350b93586ec4ed
     "clsx": "^2.1.0",
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "seedrandom": "^3.0.5",
+=======
+>>>>>>> e2283e1c5564f2c22c5e950e7a350b93586ec4ed
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
