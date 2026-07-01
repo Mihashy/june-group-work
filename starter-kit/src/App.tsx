@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Sun, Newspaper, CheckCircle, Clock } from 'lucide-react';
 import Task from "./Task";
+import { useRef } from 'react';
 
 import { OmikuziAI } from "./OmikuziAI";
 import { FortuneDisplay } from "./FortuneDisplay";
@@ -49,15 +50,20 @@ export default function App() {
   const [fortune, setFortune] = useState("");
   //ローディング画面を表示すべきか否かを判断する
   const [isLoading, setIsLoading] = useState(false); 
+  //おみくじを引いた回数を保持
+  const pulledNum = useRef( false );
   //おみくじのボタンの関数
   const omikuziClick = async () => {
     //ローディング画面表示開始
     setIsLoading( true );
 
     //OmikuziAI.tsx内のOmikuziAI関数を呼び出してAI生成の文章を取得
-    const result = await OmikuziAI();
+    const result = await OmikuziAI( pulledNum.current );
     //fortuneに突っ込む
     setFortune( result );
+
+    //回数を増加
+    if( !pulledNum.current ) pulledNum.current = true;
 
     //ローディング画面終了
     setIsLoading( false );
